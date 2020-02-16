@@ -4,7 +4,8 @@
   "description": "App2 del test de sirena",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./index.js"
+    "desarrollo": "nodemon ./index.js",
+    "start": "node ./index.js"
   },
   "author": "Matias Alvarez",
   "license": "ISC",

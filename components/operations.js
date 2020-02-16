@@ -1,6 +1,8 @@
 const axios = require('axios');
 const report = require('./report');
 
+
+
 /**
  * Genera una lista de 10 peliculas de forma random.
  * Obtiene Title, Premiere y vewers de THE MOVIE DB, 
@@ -75,9 +77,12 @@ const generatorMovies = async () => {
 exports.insertMovies = async () => {
   try {
     const listMovies = await generatorMovies();
-
+    
     listMovies.forEach(
-      async movie => await axios.post('http://localhost:5000/movies/', movie)
+      // async movie => await axios.post('http://localhost:5000/movies/', movie)
+      
+      async movie => await axios.post(process.env.URL_APP1,movie)
+      
     );
   } catch (error) {
     console.log(error);
@@ -89,12 +94,12 @@ exports.insertMovies = async () => {
  */
 exports.deleteAllMovies = async () => {
   try {
-    const respuesta = await axios.get('http://localhost:5000/movies');
+    const respuesta = await axios.get(process.env.URL_APP1);
     //console.log(respuesta);
     const actualMovies = respuesta.data;
     actualMovies.forEach(
       async movie =>
-        await axios.delete(`http://localhost:5000/movies/${movie._id}`)
+        await axios.delete(`${process.env.URL_APP1}${movie._id}`)
     );
   } catch (error) {
     console.log(error);
@@ -109,7 +114,7 @@ exports.deleteAllMovies = async () => {
 exports.updateMovieViewer = async () => {
   try {
     let random = Math.floor(Math.random() * 4);
-    const movieList = await axios.get('http://localhost:5000/movies');
+    const movieList = await axios.get(process.env.URL_APP1);
     //console.log(respuesta);
     const actualMovies = movieList.data;
     let movie = actualMovies[random];
@@ -117,7 +122,7 @@ exports.updateMovieViewer = async () => {
     movie = { ...movie, viewers: movie.viewers + 1 };
     console.log(movie.title, movie.viewers);
     let respuesta = await axios.put(
-      `http://localhost:5000/movies/${movie._id}`,
+      `${process.env.URL_APP1}${movie._id}`,
       movie
     );
   } catch (error) {
@@ -131,7 +136,7 @@ exports.updateMovieViewer = async () => {
  */
 exports.movieListSort = async () => {
   try {
-    const movieList = await axios.get('http://localhost:5000/movies');
+    const movieList = await axios.get(process.env.URL_APP1);
     //console.log(respuesta);
 
     const actualMovies = movieList.data;

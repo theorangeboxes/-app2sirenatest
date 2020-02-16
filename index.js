@@ -2,46 +2,45 @@ const bodyParser = require('body-parser');
 const Axios = require('axios');
 const cron = require('node-cron');
 const express = require('express');
-
-
-
 const operations = require('./components/operations');
 
+require('dotenv').config({ path: 'variables.env' });
 
 operations.deleteAllMovies();
 operations.insertMovies();
-//operations.movieListSort();
 
+cron.schedule('*/1 * * * *', () => {
+  console.log('************** Every Minute update viwers ************** ');
+  operations.updateMovieViewer();
+});
 
+cron.schedule('*/10 * * * *', () => {
+  console.log('************** Every 10 Minute update viwers ************** ');
 
-cron.schedule("*/1 * * * *", () => {
-    let d = new Date();
-   console.log('************** Every Minute update viwers ************** ');
-   operations.updateMovieViewer();
-   
-   //operations.movieListSort();
-})
+  operations.movieListSort();
+});
 
-cron.schedule("*/10 * * * *", () => {
-    console.log('************** Every 10 Minute update viwers ************** ');
-    //operations.deleteAllMovies();
-    operations.movieListSort();
-    
-
- })
-
- cron.schedule("*/30 * * * *", () => {
-    console.log('************** Every 30 Minute update viwers ************** ');
+cron.schedule('*/30 * * * *', () => {
+  console.log('************** Every 30 Minute update viwers ************** ');
+  let fecha = new Date();
+  let isWeekend = fecha.getDay() % 6 == 0;
+  if (!isWeekend) {
     operations.deleteAllMovies();
     operations.insertMovies();
-   
- })
+  } else {
+    console.log('Es fin de semana!! >> NO ELIMINAR NADA');
+  }
+});
 
-const app = express()
+const app = express();
 
 //habilitar body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(8000)
+const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || 6000;
 
+app.listen(port, host, () => {
+  console.log('el servidor esta funcionando');
+});
