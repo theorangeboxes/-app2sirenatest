@@ -9,4 +9,4 @@ Simplemente ingresar a la app por navegador para despertarla del sueño eterno d
 Pueden verificar el envio de reportes dentro del email generado para este test.
 
 NOTAS:
->utilice async/awaite para trabajar promesas, me es mas claro el codigo de esta forma pero se podria trabajar tranquilamente con promesas.
+>utilice async/await para trabajar promesas, me es mas claro el codigo de esta forma pero se podria trabajar tranquilamente con promesas.
